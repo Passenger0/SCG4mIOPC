@@ -1,0 +1,5 @@
+Wholesaler()=ProductOrder!SendProductOrder;ProductStatus?ReceiveProductStatus;DeliveryOrder?ReceiveDeliveryOrder->STOP; 
+Manufacturer() = ProductOrder?ReceiveProductOrder; SupplierOrder!SendSupplierOrder; Receipt?ReceiveReceipt; ProductStatus!SendProductStatus; DeliveryOrder!SendDeliveryOrder -> STOP;
+Broker() = SupplierOrder?ReceiveSupplierOrder; (TransportOrder!SendTransportOrder [] TurnSupplierOrder!SendTurnSupplierOrder) -> STOP;
+Carrier() = TransportOrder?ReceiveTransportOrder; DeliveryRequest!SendDeliveryRequest; DeliveryInfo?ReceiveDeliveryInfo; ((DeclarationRequest!SendDeclarationRequest; DeclarationForm?ReceiveDeclarationForm) [] Confirmation!SendConfirmation); Receipt!SendReceipt -> STOP;
+Supplier() = TurnSupplierOrder?ReceiveTurnSupplierOrder; DeliveryRequest?ReceiveDeliveryRequest; DeliveryInfo!SendDeliveryInfo; ((DeclarationRequest?ReceiveDeclarationRequest; DeclarationForm!SendDeclarationForm) [] Confirmation?ReceiveConfirmation) -> STOP;

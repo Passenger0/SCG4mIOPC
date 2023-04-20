@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_0w8llsa" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Zeebe Modeler" exporterVersion="0.7.0">
+  <bpmn:process id="Author" name="Author" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>SequenceFlow_120z55k</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:intermediateCatchEvent id="NotifactionReceived" name="NotifactionReceived">
+      <bpmn:incoming>SequenceFlow_120z55k</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1edi4uw</bpmn:outgoing>
+      <bpmn:messageEventDefinition messageRef="Message_1qhsr5i" />
+    </bpmn:intermediateCatchEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_120z55k" sourceRef="StartEvent_1" targetRef="NotifactionReceived" />
+    <bpmn:endEvent id="EndEvent_1ph3yus">
+      <bpmn:incoming>SequenceFlow_1edi4uw</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_1edi4uw" sourceRef="NotifactionReceived" targetRef="EndEvent_1ph3yus" />
+  </bpmn:process>
+  <bpmn:message id="Message_1qhsr5i" name="NotifactionReceived">
+    <bpmn:extensionElements>
+      <zeebe:subscription correlationKey="=instanceEPR" />
+    </bpmn:extensionElements>
+  </bpmn:message>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Author">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="79" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="IntermediateCatchEvent_0h9g83w_di" bpmnElement="NotifactionReceived">
+        <dc:Bounds x="272" y="79" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="250" y="122" width="81" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_120z55k_di" bpmnElement="SequenceFlow_120z55k">
+        <di:waypoint x="215" y="97" />
+        <di:waypoint x="272" y="97" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="EndEvent_1ph3yus_di" bpmnElement="EndEvent_1ph3yus">
+        <dc:Bounds x="372" y="79" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1edi4uw_di" bpmnElement="SequenceFlow_1edi4uw">
+        <di:waypoint x="308" y="97" />
+        <di:waypoint x="372" y="97" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

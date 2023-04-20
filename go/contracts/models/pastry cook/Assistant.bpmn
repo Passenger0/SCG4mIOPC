@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_07bxzvp" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Zeebe Modeler" exporterVersion="0.7.0">
+  <bpmn:process id="Assistant" name="Assistant" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>SequenceFlow_1ov9gvw</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:intermediateCatchEvent id="LayerPreparation" name="LayerPreparation">
+      <bpmn:incoming>SequenceFlow_1ov9gvw</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0mkeq62</bpmn:outgoing>
+      <bpmn:messageEventDefinition messageRef="Message_0wuxqaq" />
+    </bpmn:intermediateCatchEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_1ov9gvw" sourceRef="StartEvent_1" targetRef="LayerPreparation" />
+    <bpmn:intermediateCatchEvent id="ReceiveDecoration" name="ReceiveDecoration">
+      <bpmn:incoming>SequenceFlow_0mkeq62</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_160on3y</bpmn:outgoing>
+      <bpmn:messageEventDefinition messageRef="Message_1j6w2uk" />
+    </bpmn:intermediateCatchEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_0mkeq62" sourceRef="LayerPreparation" targetRef="ReceiveDecoration" />
+    <bpmn:serviceTask id="SendDecoratedLayer" name="SendDecoratedLayer">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="sendEvent" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_160on3y</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1dwrkd2</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="SequenceFlow_160on3y" sourceRef="ReceiveDecoration" targetRef="SendDecoratedLayer" />
+    <bpmn:endEvent id="EndEvent_0m1x2lx">
+      <bpmn:incoming>SequenceFlow_1dwrkd2</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_1dwrkd2" sourceRef="SendDecoratedLayer" targetRef="EndEvent_0m1x2lx" />
+  </bpmn:process>
+  <bpmn:message id="Message_0wuxqaq" name="LayerPreparation">
+    <bpmn:extensionElements>
+      <zeebe:subscription correlationKey="=instanceEPR" />
+    </bpmn:extensionElements>
+  </bpmn:message>
+  <bpmn:message id="Message_1j6w2uk" name="ReceiveDecoration">
+    <bpmn:extensionElements>
+      <zeebe:subscription correlationKey="=instanceEPR" />
+    </bpmn:extensionElements>
+  </bpmn:message>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Assistant">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="99" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="IntermediateCatchEvent_04nq3tj_di" bpmnElement="LayerPreparation">
+        <dc:Bounds x="272" y="99" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="247" y="142" width="86" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1ov9gvw_di" bpmnElement="SequenceFlow_1ov9gvw">
+        <di:waypoint x="215" y="117" />
+        <di:waypoint x="272" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="IntermediateCatchEvent_1oth0py_di" bpmnElement="ReceiveDecoration">
+        <dc:Bounds x="372" y="99" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="349" y="142" width="82" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0mkeq62_di" bpmnElement="SequenceFlow_0mkeq62">
+        <di:waypoint x="308" y="117" />
+        <di:waypoint x="372" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ServiceTask_0w36x13_di" bpmnElement="SendDecoratedLayer">
+        <dc:Bounds x="480" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_160on3y_di" bpmnElement="SequenceFlow_160on3y">
+        <di:waypoint x="408" y="117" />
+        <di:waypoint x="480" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="EndEvent_0m1x2lx_di" bpmnElement="EndEvent_0m1x2lx">
+        <dc:Bounds x="652" y="99" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1dwrkd2_di" bpmnElement="SequenceFlow_1dwrkd2">
+        <di:waypoint x="580" y="117" />
+        <di:waypoint x="652" y="117" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

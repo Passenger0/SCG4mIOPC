@@ -1,0 +1,2 @@
+TravelAgency() = travelInfo!SendTravelRequest -> SKIP; offer?ReceiveOffer -> SKIP; ((rejection!SendRejection -> SKIP)[](confirmation!SendConfirmation -> litinerary?ReceiveItinerary -> SKIP));
+Customer() = travelInfo?ReceiveRequest -> SKIP; offer!SendOrder -> SKIP; ((confirmation?ReceiveConfirmation -> litinerary!SendItinerary -> SKIP) [] (rejection?ReceiveRejection -> SKIP));

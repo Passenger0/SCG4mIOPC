@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" id="Definitions_0dli6re" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Zeebe Modeler" exporterVersion="0.7.0">
+  <bpmn:process id="BulkBuyer" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>SequenceFlow_0pt6pgy</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:intermediateCatchEvent id="ReceiveProduct" name="receiveProduct">
+      <bpmn:incoming>SequenceFlow_0s0x1oi</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1n3klot</bpmn:outgoing>
+      <bpmn:messageEventDefinition messageRef="Message_1klefed" />
+    </bpmn:intermediateCatchEvent>
+    <bpmn:endEvent id="EndEvent_0xknchf">
+      <bpmn:incoming>SequenceFlow_1n3klot</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:serviceTask id="BulkBuyerPlaceOrder" name="PlaceOrder">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="sendEvent" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_0rr6qoe</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1h3uprb</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="SequenceFlow_1h3uprb" sourceRef="BulkBuyerPlaceOrder" targetRef="GetReport" />
+    <bpmn:intermediateCatchEvent id="GetReport" name="getReport">
+      <bpmn:incoming>SequenceFlow_1h3uprb</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0s0x1oi</bpmn:outgoing>
+      <bpmn:messageEventDefinition messageRef="Message_1u71wx9" />
+    </bpmn:intermediateCatchEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_0s0x1oi" sourceRef="GetReport" targetRef="ReceiveProduct" />
+    <bpmn:sequenceFlow id="SequenceFlow_1n3klot" sourceRef="ReceiveProduct" targetRef="EndEvent_0xknchf" />
+    <bpmn:serviceTask id="init" name="init">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="initEvent" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_0pt6pgy</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0rr6qoe</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="SequenceFlow_0pt6pgy" sourceRef="StartEvent_1" targetRef="init" />
+    <bpmn:sequenceFlow id="SequenceFlow_0rr6qoe" sourceRef="init" targetRef="BulkBuyerPlaceOrder" />
+  </bpmn:process>
+  <bpmn:message id="Message_1u71wx9" name="GetReport">
+    <bpmn:extensionElements>
+      <zeebe:subscription correlationKey="=instanceEPR" />
+    </bpmn:extensionElements>
+  </bpmn:message>
+  <bpmn:message id="Message_1klefed" name="ReceiveProduct">
+    <bpmn:extensionElements>
+      <zeebe:subscription correlationKey="=instanceEPR" />
+    </bpmn:extensionElements>
+  </bpmn:message>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="BulkBuyer">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="192" y="102" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="IntermediateCatchEvent_0dxmwrs_di" bpmnElement="ReceiveProduct">
+        <dc:Bounds x="772" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="753" y="145" width="74" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_0xknchf_di" bpmnElement="EndEvent_0xknchf">
+        <dc:Bounds x="902" y="102" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ServiceTask_06oer4x_di" bpmnElement="BulkBuyerPlaceOrder">
+        <dc:Bounds x="530" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1h3uprb_di" bpmnElement="SequenceFlow_1h3uprb">
+        <di:waypoint x="630" y="120" />
+        <di:waypoint x="692" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="IntermediateCatchEvent_1lxnu9t_di" bpmnElement="GetReport">
+        <dc:Bounds x="692" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="686" y="145" width="49" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0s0x1oi_di" bpmnElement="SequenceFlow_0s0x1oi">
+        <di:waypoint x="728" y="120" />
+        <di:waypoint x="772" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_1n3klot_di" bpmnElement="SequenceFlow_1n3klot">
+        <di:waypoint x="808" y="120" />
+        <di:waypoint x="902" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ServiceTask_1r1qxjr_di" bpmnElement="init">
+        <dc:Bounds x="350" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0pt6pgy_di" bpmnElement="SequenceFlow_0pt6pgy">
+        <di:waypoint x="228" y="120" />
+        <di:waypoint x="350" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0rr6qoe_di" bpmnElement="SequenceFlow_0rr6qoe">
+        <di:waypoint x="450" y="120" />
+        <di:waypoint x="530" y="120" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

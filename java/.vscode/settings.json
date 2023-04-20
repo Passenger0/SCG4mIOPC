@@ -1,0 +1,11 @@
+{
+    "java.project.referencedLibraries": {
+        "include": [
+            "lib/**/*.jar",
+            "d:\\Java\\jar\\antlr-4.9.3-complete.jar"
+        ],
+        "exclude": [
+            "d:\\Java\\jar\\antlr-4.9-complete.jar"
+        ]
+    }
+}

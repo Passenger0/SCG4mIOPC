@@ -1,0 +1,10 @@
+Wholesaler()=ProductOrder!SendProductOrder;ProductStatus?ReceiveProductStatus;DeliveryOrder?ReceiveDeliveryOrder -> STOP
+
+Manufacturer()=ProductOrder?ReceiveProductOrder;SupplierOrder!SendSupplierOrder;Receipt?ReceiveReceipt;ProductStatus!SendProductStatus;DeliveryOrder!SendDeliveryOrder -> STOP
+
+Broker()=SupplierOrder?ReceiveSupplierOrder;((TurnSupplierOrder!SendTurnSupplierOrder)||(TransportOrder!SendTransportOrder)) -> STOP
+
+Supplier()=TurnSupplierOrder?ReceiveTurnSupplierOrder;DeliveryRequest?ReceiveDeliveryRequest;DeliveryInfo!SendDeliveryInfo;((Confirmation?ReceiveConfirmation)[*](DeclarationRequest?ReceiveDeclarationRequest;DeclarationForm!SendDeclarationForm)) -> STOP
+
+Carrier()=TransportOrder?ReceiveTransportOrder;DeliveryRequest!SendDeliveryRequest;DeliveryInfo?ReceiveDeliveryInfo;((Confirmation!SendConfirmation)[](DeclarationRequest!SendDeclarationRequest;DeclarationForm?ReceiveDeclarationForm));Receipt!SendReceipt -> STOP
+

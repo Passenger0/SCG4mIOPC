@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" id="Definitions_1iqu453" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Zeebe Modeler" exporterVersion="0.7.0">
+  <bpmn:process id="Customer" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>SequenceFlow_1hi9k0s</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:intermediateCatchEvent id="ReceiveRequest" name="ReceiveRequest">
+      <bpmn:incoming>SequenceFlow_1hi9k0s</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_16hhdgb</bpmn:outgoing>
+      <bpmn:messageEventDefinition messageRef="Message_1svbz1e" />
+    </bpmn:intermediateCatchEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_1hi9k0s" sourceRef="StartEvent_1" targetRef="ReceiveRequest" />
+    <bpmn:serviceTask id="SendOrder" name="SendOffer">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="sendEvent" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_16hhdgb</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0t656rv</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="SequenceFlow_16hhdgb" sourceRef="ReceiveRequest" targetRef="SendOrder" />
+    <bpmn:exclusiveGateway id="ExclusiveGateway_1moofer">
+      <bpmn:incoming>SequenceFlow_0t656rv</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_11l1c26</bpmn:outgoing>
+      <bpmn:outgoing>SequenceFlow_07qv5ls</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="SequenceFlow_0t656rv" sourceRef="SendOrder" targetRef="ExclusiveGateway_1moofer" />
+    <bpmn:intermediateCatchEvent id="ReceiveConfirmation" name="ReceiveConfirmation">
+      <bpmn:incoming>SequenceFlow_07qv5ls</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1v243aw</bpmn:outgoing>
+      <bpmn:messageEventDefinition messageRef="Message_1uwvf5l" />
+    </bpmn:intermediateCatchEvent>
+    <bpmn:serviceTask id="SendItinerary" name="SendItinerary">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="sendEvent" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_1v243aw</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1349pmn</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="SequenceFlow_1v243aw" sourceRef="ReceiveConfirmation" targetRef="SendItinerary" />
+    <bpmn:intermediateCatchEvent id="ReceiveRejection" name="ReceiveRejection">
+      <bpmn:incoming>SequenceFlow_11l1c26</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_05xwrs7</bpmn:outgoing>
+      <bpmn:messageEventDefinition messageRef="Message_1w0ft0e" />
+    </bpmn:intermediateCatchEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_11l1c26" sourceRef="ExclusiveGateway_1moofer" targetRef="ReceiveRejection">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=true</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:endEvent id="EndEvent_14x2utd">
+      <bpmn:incoming>SequenceFlow_05xwrs7</bpmn:incoming>
+      <bpmn:incoming>SequenceFlow_1349pmn</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_05xwrs7" sourceRef="ReceiveRejection" targetRef="EndEvent_14x2utd" />
+    <bpmn:sequenceFlow id="SequenceFlow_1349pmn" sourceRef="SendItinerary" targetRef="EndEvent_14x2utd" />
+    <bpmn:sequenceFlow id="SequenceFlow_07qv5ls" sourceRef="ExclusiveGateway_1moofer" targetRef="ReceiveConfirmation">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=false</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+  </bpmn:process>
+  <bpmn:message id="Message_1svbz1e" name="ReceiveRequest">
+    <bpmn:extensionElements>
+      <zeebe:subscription correlationKey="=instanceEPR" />
+    </bpmn:extensionElements>
+  </bpmn:message>
+  <bpmn:message id="Message_1uwvf5l" name="ReceiveConfirmation">
+    <bpmn:extensionElements>
+      <zeebe:subscription correlationKey="=instanceEPR" />
+    </bpmn:extensionElements>
+  </bpmn:message>
+  <bpmn:message id="Message_1w0ft0e" name="ReceiveRejection">
+    <bpmn:extensionElements>
+      <zeebe:subscription correlationKey="=instanceEPR" />
+    </bpmn:extensionElements>
+  </bpmn:message>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Customer">
+      <bpmndi:BPMNEdge id="SequenceFlow_07qv5ls_di" bpmnElement="SequenceFlow_07qv5ls">
+        <di:waypoint x="585" y="117" />
+        <di:waypoint x="652" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_1349pmn_di" bpmnElement="SequenceFlow_1349pmn">
+        <di:waypoint x="810" y="157" />
+        <di:waypoint x="810" y="212" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_05xwrs7_di" bpmnElement="SequenceFlow_05xwrs7">
+        <di:waypoint x="688" y="230" />
+        <di:waypoint x="792" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_11l1c26_di" bpmnElement="SequenceFlow_11l1c26">
+        <di:waypoint x="560" y="142" />
+        <di:waypoint x="560" y="230" />
+        <di:waypoint x="652" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_1v243aw_di" bpmnElement="SequenceFlow_1v243aw">
+        <di:waypoint x="688" y="117" />
+        <di:waypoint x="760" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0t656rv_di" bpmnElement="SequenceFlow_0t656rv">
+        <di:waypoint x="470" y="117" />
+        <di:waypoint x="535" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_16hhdgb_di" bpmnElement="SequenceFlow_16hhdgb">
+        <di:waypoint x="308" y="117" />
+        <di:waypoint x="370" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_1hi9k0s_di" bpmnElement="SequenceFlow_1hi9k0s">
+        <di:waypoint x="215" y="117" />
+        <di:waypoint x="272" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="99" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="IntermediateCatchEvent_15zwg81_di" bpmnElement="ReceiveRequest">
+        <dc:Bounds x="272" y="99" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="249" y="142" width="82" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ServiceTask_1d5lq5z_di" bpmnElement="SendOrder">
+        <dc:Bounds x="370" y="77" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ExclusiveGateway_1moofer_di" bpmnElement="ExclusiveGateway_1moofer" isMarkerVisible="true">
+        <dc:Bounds x="535" y="92" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="IntermediateCatchEvent_0tvqhet_di" bpmnElement="ReceiveConfirmation">
+        <dc:Bounds x="652" y="99" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="626" y="142" width="89" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ServiceTask_0br75gz_di" bpmnElement="SendItinerary">
+        <dc:Bounds x="760" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="IntermediateCatchEvent_0c6fqm8_di" bpmnElement="ReceiveRejection">
+        <dc:Bounds x="652" y="212" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="627" y="255" width="87" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_14x2utd_di" bpmnElement="EndEvent_14x2utd">
+        <dc:Bounds x="792" y="212" width="36" height="36" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
