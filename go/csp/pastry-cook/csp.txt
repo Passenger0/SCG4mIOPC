@@ -1,3 +1,0 @@
-Customer() = cakeRequest!SendCakeRequest -> decorations!SendDecorationsRequest -> cake?ReceiveCake -> STOP;
-PastryChet() = cakeRequest?CakePreparation -> layerRequest!AssignLayers -> decorations?ReceiveDecorations -> decoration!AssignDecoration -> layer?ReceiveAndCombineLayer -> cake!SendCake -> STOP;
-Assistant() = layerRequest?LayerPreparation -> decoration?ReceiveDecoration -> layer!SendDecoratedLayer -> STOP;

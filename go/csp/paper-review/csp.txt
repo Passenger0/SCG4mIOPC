@@ -1,3 +1,0 @@
-Chair() = (reviewRequest!AssignPaper -> review?ReceiveReviews -> SKIP); ((notifaction!SendResult -> SKIP) [] (feedback!SendFeedback -> SKIP));
-Reviewer() = reviewRequest?ReceiveReviewRequest -> review!SubmitReview -> feedback?FeedbackReceived -> STOP;
-Author() = notifaction?NotifactionReceived -> STOP;

@@ -1,3 +1,0 @@
-Student() = examsList?ChooseExam -> prenotation!BookExam -> evaluation?ReceiveEvaluation -> STOP;
-Secretary() = examsList!CommunicateExamSession -> prenotation?BookStudent -> newSession!AdviseProfessor -> STOP;
-Professor() = newSession?InitProfessor -> evaluation!Evaluate -> STOP;
